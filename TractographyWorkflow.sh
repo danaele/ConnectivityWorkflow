@@ -3,8 +3,9 @@
 #TractographyWorkflow : for neonate dataset to the connectivity matrix 
 
 #Variables
-export SUBJECT=neo-0508-1-1year
-export SUBJECT_DIR=/nas02/home/d/a/danaele/ConnectivityData/$SUBJECT
+export SUBJECT=neo-0506-1-1year
+#export SUBJECT_DIR=/nas02/home/d/a/danaele/ConnectivityData/$SUBJECT
+export SUBJECT_DIR=/work/danaele/data/$SUBJECT
 export DTI_DIR=$SUBJECT_DIR/DTI
 OverLap="true"
 export toolDIR=$PWD
@@ -31,7 +32,7 @@ echo "Bedpostx Done !"
 #-g $DTI_DIR/$SUBJECT-SW-T1-cere-seg.img.rh-rev.img.InnerSurf.Reg.vtk \
 #-o $DTI_DIR/${SUBJECT}_combined_InnerSurf.vtk
 
-if( $OverLap = "true" )
+if( $OverLap = "true" );
 then 
   export overlapFlag="--overlapping"
 else
@@ -48,7 +49,6 @@ echo $toolDIR
 #Create label surfaces
 $toolDIR/ExtractLabels.sh $toolDIR $SUBJECT $DTI_DIR $overlapFlag
 
-
 cd $SUBJECT_DIR
  
 #Create seeds list 
@@ -62,7 +62,9 @@ done
 $toolDIR/DoTractography.sh $SUBJECT $SUBJECT_DIR $DTI_DIR $overlapFlag
 
 echo "Normalize and plot connectivity matrix..."
-matlab -nojvm -nodisplay -nosplash -r "$toolDIR/connectivity_matrix_normalized('$SUBJECT_DIR/Network_${SUBJECT}$Overlap','$overlapFlag'); exit;"
+rm $SUBJECT_DIR/Network_${SUBJECT}$Overlap/Matrix_normalized_by_sum_row.txt
+rm $SUBJECT_DIR/Network_${SUBJECT}$Overlap/Matrix_normalized_by_sum_row_Visualization.pdf
+matlab -nojvm -nodisplay -nosplash -r "$toolDIR/connectivity_matrix_normalized('$SUBJECT_DIR/Network_${SUBJECT}$overlapFlag','$overlapFlag'); exit;"
 echo "End, matrix save."
 
 
