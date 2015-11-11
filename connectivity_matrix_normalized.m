@@ -1,4 +1,4 @@
-function [matrix_normalize_sum] = connectivity_matrix_normalized(network_directory,overFlag)
+function [matrix_normalize_sum] = connectivity_matrix_normalized(subject,network_directory,overlapFlag, loopcheckFlag)
 %function connectivity_matrix_normalized(network_directory, overlapFlag )
 % Script to plot the connectivity matrix with neonate Data
 
@@ -9,7 +9,7 @@ matrix=strcat(network_directory,'/fdt_network_matrix')
 waytotal=strcat(network_directory,'/waytotal')
 %Read matrix
 fdt_network_matrix=importdata(matrix);
-waytotal=importdata('/NIRAL/work/danaele/data/neo-0576-1-1-1year/Network_neo-0576-1-1-1year_2/waytotal');
+waytotal=importdata(waytotal);
 
 %Get nb of region
 N=size(waytotal);
@@ -91,11 +91,24 @@ if  print_value==1
     set(hStrings,{'Color'},num2cell(textColors,2));  %# Change the text colors
 end
 
-if length(overlapFlag)>1
-    title('\bf \fontsize{12} Connectivity matrix of neo-0508 data - with Loopcheck and with Overlapping - normalize by sum ')
-else 
-    title('\bf \fontsize{12} Connectivity matrix of neo-0508 data - with Loopcheck and without Overlapping - normalize by sum ')
+if length(overlapFlag)>3 && length(loopcheckFlag)>3
+    title_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - with Loopcheck and with Overlapping - normalize by sum ');
+    header_matrix=strcat('Connectivity matrix of ', subject, 'data - with Loopcheck and with Overlapping - normalize by sum ');
+
+elseif length(overlapFlag)>3 && length(loopcheckFlag)<3
+    title_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - without Loopcheck and with Overlapping - normalize by sum ');
+    header_matrix=strcat('Connectivity matrix of ', subject, 'data - without Loopcheck and with Overlapping - normalize by sum ');
+
+elseif length(overlapFlag)<3 && length(loopcheckFlag)>3
+    title_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - with Loopcheck and without Overlapping - normalize by sum ');
+    header_matrix=strcat('Connectivity matrix of ', subject, 'data - with Loopcheck and without Overlapping - normalize by sum ');
+
+else
+    title_no_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - without Loopcheck and without Overlapping - normalize by sum ');
+    header_matrix=strcat('Connectivity matrix of ', subject, 'data - without Loopcheck and without Overlapping - normalize by sum ');
 end
+title(title_overlap);
+
 
 ylabel('\bf Seeds')
 xlabel('\bf Targets')
@@ -109,6 +122,11 @@ set(h,'PaperPosition', [0 0 1 1]);
 textfile_name =strcat(network_directory,'/Matrix_normalized_by_sum_row.txt');
 pdf_name = strcat(network_directory , '/Matrix_normalized_by_sum_row_Visualization.pdf');
 print(gcf, '-dpdf',pdf_name );
+
+
+textfile_name =strcat(network_directory,'/Matrix_normalized_by_sum_row.txt');
+header_matrix=
+dlmwrite(textfile_name,header_matrix,'-append','delimiter',' ','roffset',1)
 dlmwrite(textfile_name,matrix_normalize_sum,'-append','delimiter',' ','roffset',1)
 
 % %%Total lines%%

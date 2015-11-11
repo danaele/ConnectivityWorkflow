@@ -2,4 +2,4 @@
 
 export SUBJECT_DIR=$1
 
-bedpostx $SUBJECT_DIR/Diffusion
+bedpostx ${SUBJECT_DIR}/Diffusion
