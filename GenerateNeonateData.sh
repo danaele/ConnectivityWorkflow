@@ -36,8 +36,9 @@ foreach case ($casesFileDTI)
   set caseFileOuterSurface_rh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Outer/${casePrefix}*.rh*vtk )
   
   if ((-e $caseFileInnerSurface_lh) && (-e $caseFileInnerSurface_lh) && (-e $caseFileInnerSurface_lh) && (-e $caseFileInnerSurface_rh) && (-e $caseFileInnerSurface_rh) && (-e $caseFileInnerSurface_rh)) then
-    echo surface lh files are here $casePrefix
+    echo surface files are here $casePrefix
     set caseSurfaces = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/*/${casePrefix}*vtk )
+    set surfaceExist = exist
   endif
   
   
@@ -53,7 +54,7 @@ foreach case ($casesFileDTI)
     echo T1SkullStrippedCorrected files are here $casePrefix
   endif
 
-  if((-e $caseSurfaces) && (-e $casesFileDTI42Dir) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected)) then 
+  if ( ( $surfaceExist == exist ) && (-e $casesFileDTI42Dir) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected) ) then
     echo All files required exist
     
     set caseDir= ( $path_output/$casePrefix )
