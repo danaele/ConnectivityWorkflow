@@ -28,12 +28,19 @@ foreach case ($casesFileDTI)
   endif
   
   #Surfaces
-  set caseFileInnerSurface = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Inner/${casePrefix}*.lh*vtk )
-  set caseFileMiddleSurface = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Middle/${casePrefix}*.lh*vtk )
-  set caseFileOuterSurface = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Outer/${casePrefix}*.lh*vtk )
-  if (-e $caseFileInnerSurface) then
-    echo surface files are here $casePrefix
+  set caseFileInnerSurface_lh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Inner/${casePrefix}*.lh*vtk )
+  set caseFileMiddleSurface_lh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Middle/${casePrefix}*.lh*vtk )
+  set caseFileOuterSurface_lh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Outer/${casePrefix}*.lh*vtk )
+  set caseFileInnerSurface_rh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Inner/${casePrefix}*.rh*vtk )
+  set caseFileMiddleSurface_rh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Middle/${casePrefix}*.rh*vtk )
+  set caseFileOuterSurface_rh = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/Outer/${casePrefix}*.rh*vtk )
+  
+  if ((-e $caseFileInnerSurface_lh) && (-e $caseFileInnerSurface_lh) && (-e $caseFileInnerSurface_lh) && (-e $caseFileInnerSurface_rh) && (-e $caseFileInnerSurface_rh) && (-e $caseFileInnerSurface_rh)) then
+    echo surface lh files are here $casePrefix
+    set caseSurfaces = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/*/${casePrefix}*vtk )
   endif
+  
+  
   
   #T1
   set T1SkullStrippedCorrectedSeg = ( /NIRAL/work/Surface_Analysis/Conte_1year_surfaceAnalysis/IMAGES/SkullStrippedImages/1year_Skull_Stripped/${casePrefix}-T1_SkullStripped_corrected-n3-seg.hdr )
@@ -59,7 +66,7 @@ foreach case ($casesFileDTI)
     cp $casesFileDTI42Dir $caseDir/DTI/
     cp $casesFileDWI $caseDir/DTI/
     cp $casesFileBrainMask $caseDir/DTI
-    cp $caseFileInnerSurface $caseDir/sMRI/surf
+    cp $caseSurfaces $caseDir/sMRI/surf
     
     ImageMath $T1SkullStrippedCorrectedSeg -changeOrig -195,-233,0 -outfile $caseDir/sMRI/mri/${casePrefix}_seg.nrrd
     ImageMath $T1SkullStrippedCorrected -changeOrig -195,-233,0 -outfile $caseDir/sMRI/mri/${casePrefix}_T1.nrrd
@@ -86,9 +93,9 @@ foreach case ($casesFileDTI)
     end
     
     #Merge both hemisphere
-    polydatamerge -f $DTI_DIR/$SUBJECT-SW-T1-cere-seg.img.lh-rev.img.MiddleSurf.Reg.vtk.AALcolor.vtk -g $SUBJECT-SW-T1-cere-seg.img.rh-rev.img.MiddleSurf.Reg.vtk.AALcolor.vtk -o $DTI_DIR/${SUBJECT}_combined_MiddleSurf_AALCOLOR.vtk
+    polydatamerge -f $caseDir/DTI/${casePrefix}-SW-T1-cere-seg.img.lh-rev.img.MiddleSurf.Reg.vtk.AALcolor.vtk -g $caseDir/DTI/${casePrefix}-SW-T1-cere-seg.img.rh-rev.img.MiddleSurf.Reg.vtk.AALcolor.vtk -o $caseDir/DTI/${casePrefix}_combined_MiddleSurf_AALCOLOR.vtk
 
-    polydatamerge -f $DTI_DIR/$SUBJECT-SW-T1-cere-seg.img.lh-rev.img.InnerSurf.Reg.vtk -g $DTI_DIR/$SUBJECT-SW-T1-cere-seg.img.rh-rev.img.InnerSurf.Reg.vtk -o $DTI_DIR/${SUBJECT}_combined_InnerSurf.vtk
+    polydatamerge -f $caseDir/DTI/${casePrefix}-SW-T1-cere-seg.img.lh-rev.img.InnerSurf.Reg.vtk -g $caseDir/DTI/${casePrefix}-SW-T1-cere-seg.img.rh-rev.img.InnerSurf.Reg.vtk -o $caseDir/DTI/${casePrefix}_combined_InnerSurf.vtk
     
   endif
 end
