@@ -53,7 +53,7 @@ foreach case ($casesFileDTI)
     echo T1SkullStrippedCorrected files are here $casePrefix
   endif
 
-  if((-e $caseFileInnerSurface) && (-e $casesFileDTI42Dir) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected)) then 
+  if((-e $caseSurfaces) && (-e $casesFileDTI42Dir) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected)) then 
     echo All files required exist
     
     set caseDir= ( $path_output/$casePrefix )
