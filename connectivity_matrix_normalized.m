@@ -92,22 +92,22 @@ if  print_value==1
 end
 
 if length(overlapFlag)>3 && length(loopcheckFlag)>3
-    title_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - with Loopcheck and with Overlapping - normalize by sum ');
+    title_figure=strcat(subject,'\bf \fontsize{12} Connectivity matrix of data - with Loopcheck and with Overlapping - normalize by sum ');
     header_matrix=strcat('Connectivity matrix of ', subject, 'data - with Loopcheck and with Overlapping - normalize by sum ');
 
 elseif length(overlapFlag)>3 && length(loopcheckFlag)<3
-    title_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - without Loopcheck and with Overlapping - normalize by sum ');
+    title_figure=strcat(subject,'\bf \fontsize{12} Connectivity matrix of data - without Loopcheck and with Overlapping - normalize by sum ');
     header_matrix=strcat('Connectivity matrix of ', subject, 'data - without Loopcheck and with Overlapping - normalize by sum ');
 
 elseif length(overlapFlag)<3 && length(loopcheckFlag)>3
-    title_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - with Loopcheck and without Overlapping - normalize by sum ');
+    title_figure=strcat(subject, '\bf \fontsize{12} Connectivity matrix of data - with Loopcheck and without Overlapping - normalize by sum ');
     header_matrix=strcat('Connectivity matrix of ', subject, 'data - with Loopcheck and without Overlapping - normalize by sum ');
 
 else
-    title_no_overlap=strcat('\bf \fontsize{12} Connectivity matrix of ', subject, 'data - without Loopcheck and without Overlapping - normalize by sum ');
+    title_figure=strcat(subject,'\bf \fontsize{12} Connectivity matrix of data - without Loopcheck and without Overlapping - normalize by sum ');
     header_matrix=strcat('Connectivity matrix of ', subject, 'data - without Loopcheck and without Overlapping - normalize by sum ');
 end
-title(title_overlap);
+title(title_figure);
 
 
 ylabel('\bf Seeds')
@@ -125,8 +125,6 @@ print(gcf, '-dpdf',pdf_name );
 
 
 textfile_name =strcat(network_directory,'/Matrix_normalized_by_sum_row.txt');
-header_matrix=
-dlmwrite(textfile_name,header_matrix,'-append','delimiter',' ','roffset',1)
 dlmwrite(textfile_name,matrix_normalize_sum,'-append','delimiter',' ','roffset',1)
 
 % %%Total lines%%
