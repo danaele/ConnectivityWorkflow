@@ -3,7 +3,7 @@
 #TractographyWorkflow : for neonate dataset to the connectivity matrix 
 
 #Variables
-export SUBJECT=neo-0506-1-1year
+export SUBJECT=neo-0576-1-1-1year
 #export SUBJECT_DIR=/nas02/home/d/a/danaele/ConnectivityData/${SUBJECT}
 export SUBJECT_DIR=/work/danaele/data/${SUBJECT}
 export DTI_DIR=${SUBJECT_DIR}/DTI
@@ -15,13 +15,13 @@ export toolDIR=$PWD
 #Create Diffusion data for bedpostx 
 echo "Create Diffusion data ..."
 
-${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
+#${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
 echo "Create Diffusion data done !"
 
 #Bedpostx 
 echo "Run bedpostx ..."
 cd ${SUBJECT_DIR}
-${toolDIR}/DoBedpostx.sh ${SUBJECT_DIR}
+#${toolDIR}/DoBedpostx.sh ${SUBJECT_DIR}
 echo "Bedpostx Done !"
 
 if [ "${OverLap}" = "true" ]; then 
@@ -38,21 +38,21 @@ export SURF_DIR=$PWD/labelSurfaces
 
 echo ${toolDIR}
 #Create label surfaces
-${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${DTI_DIR} ${overlapFlag}
+#${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${DTI_DIR} ${overlapFlag}
 
 cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-for case in ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/* 
+for i in `seq 1 79`;
 do
-  case6=$(basename $case)
-  if [ "$case6" = "6.asc" ]; then
+  if [ $i = 6 ]; then
     echo "Don't add 6.asc to seeds list" 
   else
-    echo ${case} >> seeds${overlapName}.txt
+    echo ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${i}.asc >> seeds${overlapName}.txt
   fi
-done 
+done
+
 
 if [ "${loopcheck}" = "true" ]; then 
   export loopcheckFlag="--loopcheck"
