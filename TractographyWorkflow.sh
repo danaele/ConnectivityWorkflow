@@ -3,7 +3,7 @@
 #TractographyWorkflow : for neonate dataset to the connectivity matrix 
 
 #Variables
-export SUBJECT=neo-0576-1-1-1year
+export SUBJECT=neo-0508-1-1year
 #export SUBJECT_DIR=/nas02/home/d/a/danaele/ConnectivityData/${SUBJECT}
 export SUBJECT_DIR=/work/danaele/data/${SUBJECT}
 export DTI_DIR=${SUBJECT_DIR}/DTI
@@ -15,13 +15,13 @@ export toolDIR=$PWD
 #Create Diffusion data for bedpostx 
 echo "Create Diffusion data ..."
 
-#${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
+${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
 echo "Create Diffusion data done !"
 
 #Bedpostx 
 echo "Run bedpostx ..."
 cd ${SUBJECT_DIR}
-#${toolDIR}/DoBedpostx.sh ${SUBJECT_DIR}
+${toolDIR}/DoBedpostx.sh ${SUBJECT_DIR}
 echo "Bedpostx Done !"
 
 if [ "${OverLap}" = "true" ]; then 
@@ -38,7 +38,7 @@ export SURF_DIR=$PWD/labelSurfaces
 
 echo ${toolDIR}
 #Create label surfaces
-#${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${DTI_DIR} ${overlapFlag}
+${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${DTI_DIR} ${overlapFlag}
 
 cd ${SUBJECT_DIR}
  
@@ -68,8 +68,8 @@ ${toolDIR}/DoTractography.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapName}
 
 echo "Normalize and plot connectivity matrix..."
 #erase old matrix saved
-rm ${SUBJECT_DIR}/${network_DIR}/Matrix_normalized_by_sum_row.txt
-rm ${SUBJECT_DIR}/${network_DIR}/Matrix_normalized_by_sum_row_Visualization.pdf
+rm ${network_DIR}/Matrix_normalized_by_sum_row.txt
+rm ${network_DIR}/Matrix_normalized_by_sum_row_Visualization.pdf
 cd ${toolDIR}
 matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
 echo "End, matrix save."
