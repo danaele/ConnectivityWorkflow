@@ -125,7 +125,7 @@ print(gcf, '-dpdf',pdf_name );
 
 
 textfile_name =strcat(network_directory,'/Matrix_normalized_by_sum_row.txt');
-dlmwrite(textfile_name,matrix_normalize_sum,'-append','delimiter',' ','roffset',1)
+dlmwrite(textfile_name,matrix_normalize_sum,'-append','delimiter',' ')
 
 % %%Total lines%%
 % total_line=zeros(nb_region,1);
