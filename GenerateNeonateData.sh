@@ -1,7 +1,7 @@
 #!/bin/tcsh
 set nonomatch
 
-set path_output= ( /work/danaele/data2 )
+set path_output= ( /Human2/Neonate-1-2yr )
 
 set casesFileDTI = ( /work/Rename_1-2yrDTI/DTI_1x1x1_42Dir/neo*1year*_42_DWI*_QCed_VC_Upx2_DTI_stripped_embed.nrrd )
 

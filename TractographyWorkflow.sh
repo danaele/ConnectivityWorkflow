@@ -14,14 +14,19 @@ export toolDIR=$PWD
 
 #Create Diffusion data for bedpostx 
 echo "Create Diffusion data ..."
-
-#${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
-echo "Create Diffusion data done !"
+export DiffusionData=${SUBJECT_DIR}/Diffusion/data.nii.gz
+export DiffusiobNodif_Brain=${SUBJECT_DIR}/Diffusion/nodif_brain_mask.nii.gz
+if [ -e $DiffusionData ] && [ -e $DiffusiobNodif_Brain ]; then 
+  echo "Diffusion Data already created "
+else
+  ${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
+  echo "Create Diffusion data done !"
+fi
 
 #Bedpostx 
 echo "Run bedpostx ..."
 cd ${SUBJECT_DIR}
-#${toolDIR}/DoBedpostx.sh ${SUBJECT_DIR}
+${toolDIR}/DoBedpostx.sh ${SUBJECT_DIR}
 echo "Bedpostx Done !"
 
 if [ "${OverLap}" = "true" ]; then 
@@ -53,7 +58,6 @@ do
   fi
 done
 
-
 if [ "${loopcheck}" = "true" ]; then 
   export loopcheckFlag="--loopcheck"
   export loopcheckName="_loopcheck"
@@ -62,9 +66,15 @@ else
   export loopcheckName=""
 fi
 
-export network_DIR=${SUBJECT_DIR}/Network_${SUBJECT}${overlapName}${loopcheckName}  
+export network_DIR=${SUBJECT_DIR}/Network_${SUBJECT}${overlapName}${loopcheckName} 
+export matrix=$network_DIR/fdt_network_matrix 
+echo $matrix
 #Do tractography with probtrackx2
-#${toolDIR}/DoTractography.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapName} ${loopcheckFlag} ${network_DIR}
+if [ -e $matrix ]; then
+  echo "probtrackx already proceed"
+else
+  ${toolDIR}/DoTractography.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapName} ${loopcheckFlag} ${network_DIR}
+fi
 
 echo "Normalize and plot connectivity matrix..."
 #erase old matrix saved
