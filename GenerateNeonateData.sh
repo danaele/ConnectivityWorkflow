@@ -11,10 +11,18 @@ foreach case ($casesFileDTI)
   set casePrefix = ( $case:t:s/-Trio//:s/_42_DWI_QCed_VC_Upx2_DTI_stripped_embed.nrrd// )
   echo $casePrefix
 
-  #DTI
-  set casesFileDTI42Dir = ( /NIRAL/work/Rename_1-2yrDTI/DTI_1x1x1_42Dir/${casePrefix}_42_DWI*_QCed_VC_Upx2_DTI_stripped_embed.nrrd )
-  if (-e $casesFileDTI42Dir) then
-    echo casesFileDTI42Dir files are here $casePrefix
+  #DTIReg
+  set caseFA_Affine = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI*_ANTS_FA_Affine.txt )
+  set caseFA_GlobalCombDeformationField = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI*_ANTS_FA_GlobalCombDeformationField.nrrd )
+  set caseFA_InverseWarp = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI*_ANTS_FA_InverseWarp.nii.gz )
+  set caseFA_Warp = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI*_ANTS_FA_Warp.nii.gz )
+  set casewarpedDTI = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI*_warpedDTI.nrrd )
+
+  set DTIregFilesExist = notExist
+  if ( (-e $caseFA_Affine) && (-e $caseFA_GlobalCombDeformationField) && (-e $caseFA_InverseWarp) && (-e $caseFA_Warp) && (-e $casewarpedDTI) ) then
+    echo casesFilesDTIReg files are here $casePrefix
+    set casesFilesDTIReg = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI* )
+    set DTIregFilesExist = exist
   endif
   
    set casesFileDWI = ( /NIRAL/work/Rename_1-2yrDTI/DWI_1x1x1_ALL/${casePrefix}_42_DWI*_QCed_VC_Upx2.nrrd )
@@ -53,7 +61,7 @@ foreach case ($casesFileDTI)
     echo T1SkullStrippedCorrected files are here $casePrefix
   endif
 
-  if ( ( $surfaceExist == exist ) && (-e $casesFileDTI42Dir) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected) ) then
+  if ( ( $surfaceExist == exist ) && ( $DTIregFilesExist == exist ) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected) ) then
     echo All files required exist
     
     set caseDir= ( $path_output/$casePrefix )
@@ -63,8 +71,8 @@ foreach case ($casesFileDTI)
       mkdir $caseDir/sMRI/{surf,mri}
       mkdir $caseDir/DTI/RegDTIAtlas
    
-      cp $case $caseDir/DTI/RegDTIAtlas
-      cp $casesFileDTI42Dir $caseDir/DTI/
+      cp $casesFilesDTIReg $caseDir/DTI/RegDTIAtlas
+      cp $case $caseDir/DTI/
       cp $casesFileDWI $caseDir/DTI/
       cp $casesFileBrainMask $caseDir/DTI
       cp $caseSurfaces $caseDir/sMRI/surf
