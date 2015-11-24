@@ -43,19 +43,54 @@ export SURF_DIR=$PWD/labelSurfaces
 
 echo ${toolDIR}
 #Create label surfaces
-#${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${DTI_DIR} ${overlapFlag}
+${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
 
 cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-for i in `seq 1 79`;
+#for i in `seq 1 79`;
+#do
+#  if [ $i = 6 ]; then
+#    echo "Don't add 6.asc to seeds list" 
+#  else
+#    echo ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${i}.asc >> seeds${overlapName}.txt
+#  fi
+#done
+
+#for i in 'seq 1 2'
+#do
+#  for case in ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/*.asc
+#  do
+#    echo $case
+#    export numberFileLabel=`basename $case`
+#    export numberLabel=${numberFileLabel%.*}
+#    echo $numberLabel
+#    export ans=$(( ${numberLabel}%2 ))
+#    if [ $ans = 1  ] && [ $i = 1 ]; then
+#       echo $case >> seeds${overlapName}.txt 
+#    elif [ $ans = 0 ] && [ $i = 2 ] ; then
+#       if [ $numberLabel = 78 ]; then
+#        echo "Don't add 78.asc to seeds list" 
+#       else
+#        echo $case >> seeds${overlapName}.txt
+#       fi  
+#    fi
+#  done  
+#done
+for i in `seq 1 2`
 do
-  if [ $i = 6 ]; then
-    echo "Don't add 6.asc to seeds list" 
-  else
-    echo ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${i}.asc >> seeds${overlapName}.txt
-  fi
+  echo $i
+  for file in ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/*.asc; do 
+    export numberFileLabel=`basename $file`
+    export numberLabel=${numberFileLabel%.*}
+    echo $numberLabel
+    if [ $(($numberLabel % 2)) -eq 0 ] && [ $i -eq 1 ]; then
+      echo $file >> seeds${overlapName}.txt
+    elif [ $(($numberLabel % 2)) -ne 0 ] && [ $i -eq 2 ]; then
+      echo $file >> seeds${overlapName}.txt
+    fi
+  done
 done
 
 if [ "${loopcheck}" = "true" ]; then 

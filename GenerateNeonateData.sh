@@ -20,19 +20,23 @@ foreach case ($casesFileDTI)
 
   set DTIregFilesExist = notExist
   if ( (-e $caseFA_Affine) && (-e $caseFA_GlobalCombDeformationField) && (-e $caseFA_InverseWarp) && (-e $caseFA_Warp) && (-e $casewarpedDTI) ) then
-    echo casesFilesDTIReg files are here $casePrefix
+    echo casesFilesDTIReg files are here
     set casesFilesDTIReg = ( /NIRAL/work/Rename_1-2yrDTI/DTIreg/DTI_1x1x1_42Dir/${casePrefix}_42_DWI* )
     set DTIregFilesExist = exist
   endif
   
    set casesFileDWI = ( /NIRAL/work/Rename_1-2yrDTI/DWI_1x1x1_ALL/${casePrefix}_42_DWI*_QCed_VC_Upx2.nrrd )
   if (-e $casesFileDWI) then
-    echo casesFileDWI files are here $casePrefix
+    echo casesFileDWI files are here
+  else
+    echo casesFileDWI files are not here
   endif
   
    set casesFileBrainMask = ( /NIRAL/work/Rename_1-2yrDTI/BrainMasks_1x1x1/${casePrefix}-brainmask_Upx2.nrrd )
   if (-e $casesFileBrainMask) then
-    echo casesFileBrainMask files are here $casePrefix
+    echo casesFileBrainMask files are here
+  else
+    echo casesFileBrainMask files are not here
   endif
   
   #Surfaces
@@ -45,7 +49,7 @@ foreach case ($casesFileDTI)
   
   set surfaceExist = notExist 
   if ( (-e $caseFileInnerSurface_lh) && (-e $caseFileMiddleSurface_lh) && (-e $caseFileOuterSurface_lh) && (-e $caseFileInnerSurface_rh) && (-e $caseFileMiddleSurface_rh) && (-e $caseFileOuterSurface_rh) ) then
-    echo surface files are here $casePrefix
+    echo surface files are here
     set caseSurfaces = ( /work/Surface_Analysis/Conte_1year_surfaceAnalysis/SURFACES/USABLE_SURFACES/*/${casePrefix}*vtk )
     set surfaceExist = exist
   endif
@@ -53,12 +57,16 @@ foreach case ($casesFileDTI)
   #T1
   set T1SkullStrippedCorrectedSeg = ( /NIRAL/work/Surface_Analysis/Conte_1year_surfaceAnalysis/IMAGES/SkullStrippedImages/1year_Skull_Stripped/${casePrefix}-T1_SkullStripped_corrected-n3-seg.hdr )
   if (-e $T1SkullStrippedCorrectedSeg) then
-    echo T1SkullStrippedCorrectedSeg files are here $casePrefix
+    echo T1SkullStrippedCorrectedSeg files are here
+  else
+    echo SkullStrippedCorrectedSeg files are not here
   endif
   
   set T1SkullStrippedCorrected = ( /Human/conte_projects/CONTE_NEO/Data/${casePrefix}/Skull_Stripped/${casePrefix}-T1_SkullStripped_corrected.nrrd )
   if (-e $T1SkullStrippedCorrected) then
-    echo T1SkullStrippedCorrected files are here $casePrefix
+    echo T1SkullStrippedCorrected files are here
+  else
+    echo T1SkullStrippedCorrected files are not here
   endif
 
   if ( ( $surfaceExist == exist ) && ( $DTIregFilesExist == exist ) && (-e $casesFileDWI) && (-e $casesFileBrainMask) && (-e $T1SkullStrippedCorrectedSeg) && (-e $T1SkullStrippedCorrected) ) then
@@ -93,8 +101,8 @@ foreach case ($casesFileDTI)
       ITKTransformTools MO2Aff $caseDir/sMRI/mri/${casePrefix}_RegAffine.txt $caseDir/sMRI/mri/${casePrefix}_RegAffine_ITK.txt
       ITKTransformTools invert $caseDir/sMRI/mri/${casePrefix}_RegAffine_ITK.txt $caseDir/sMRI/mri/${casePrefix}_RegAffineInv_ITK.txt
       ITKTransformTools concatenate $caseDir/sMRI/mri/${casePrefix}_GlobalWarp.nrrd -r $caseDir/DTI/${casePrefix}_DTI_AD.nrrd $caseDir/sMRI/mri/${casePrefix}_RegAffine_ITK.txt $caseDir/sMRI/mri/${casePrefix}_RegWarp.nrrd displacement
-      ITKTransformTools concatenate $caseDir/sMRI/mri/${casePrefix}_GlobalInvWarp.nrrd -r $caseDir/sMRI/mri/${casePrefix}_T1.nrrd  $caseDir/sMRI/mri/${casePrefix}_RegInverseWarp.nrrd displacement $caseDir/sMRI/mri/${casePrefix}_RegAffineInv_ITK.txt 
-  
+      ITKTransformTools concatenate $caseDir/sMRI/mri/${casePrefix}_GlobalInvWarp.nrrd -r $caseDir/sMRI/mri/${casePrefix}_T1.nrrd  $caseDir/sMRI/mri/${casePrefix}_RegInverseWarp.nrrd displacement $caseDir/sMRI/mri/${casePrefix}_RegAffineInv_ITK.txt
+
       ResampleScalarVectorDWIVolume $caseDir/sMRI/mri/${casePrefix}_T1.nrrd $caseDir/DTI/${casePrefix}_T1_regDTI.nrrd -H $caseDir/sMRI/mri/${casePrefix}_GlobalWarp.nrrd --hfieldtype displacement -R $caseDir/DTI/${casePrefix}_DTI_AD.nrrd
   
       foreach surface ($caseDir/sMRI/surf/*vtk)
@@ -109,6 +117,6 @@ foreach case ($casesFileDTI)
       echo Data ${casePrefix} already proceed
     endif
    else
-      echo Files required missing 
+      echo Files required missing surface=$surfaceExist, DTIregFilesExist=$DTIregFilesExist
    endif
- end
+end
