@@ -8,7 +8,7 @@ export loopcheckFlag=$5
 export network_dir=$6
 
 echo "Convert T1 image to nifti format "
-DWIConvert --inputVolume $DTI_DIR/${SUBJECT}_T1_regDTI.nrrd --conversionMode NrrdToFSL --outputVolume $DTI_DIR/${SUBJECT}_T1_regDTI.nii.gz
+DWIConvert --inputVolume $DTI_DIR/${SUBJECT}_T1_regDTI.nrrd --conversionMode NrrdToFSL --outputVolume $DTI_DIR/${SUBJECT}_T1_regDTI.nii.gz --outputBValues $DTI_DIR/bvals.temp --outputBVectors $DTI_DIR/bvecs.temp
 echo "Conversion done"
 
 
