@@ -4,8 +4,8 @@
 
 #Variables
 export SUBJECT=$1
-#export SUBJECT_DIR=/nas02/home/d/a/danaele/ConnectivityData/${SUBJECT}
-export SUBJECT_DIR=/work/danaele/data/${SUBJECT}
+export SUBJECT_DIR=/netscr/danaele/neonate_1year/${SUBJECT}
+#export SUBJECT_DIR=/work/danaele/data/${SUBJECT}
 export DTI_DIR=${SUBJECT_DIR}/DTI
 OverLap="true"
 loopcheck="true"
@@ -43,52 +43,21 @@ export SURF_DIR=$PWD/labelSurfaces
 
 echo ${toolDIR}
 #Create label surfaces
-${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
+#${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
 
 cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-#for i in `seq 1 79`;
-#do
-#  if [ $i = 6 ]; then
-#    echo "Don't add 6.asc to seeds list" 
-#  else
-#    echo ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${i}.asc >> seeds${overlapName}.txt
-#  fi
-#done
-
-#for i in 'seq 1 2'
-#do
-#  for case in ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/*.asc
-#  do
-#    echo $case
-#    export numberFileLabel=`basename $case`
-#    export numberLabel=${numberFileLabel%.*}
-#    echo $numberLabel
-#    export ans=$(( ${numberLabel}%2 ))
-#    if [ $ans = 1  ] && [ $i = 1 ]; then
-#       echo $case >> seeds${overlapName}.txt 
-#    elif [ $ans = 0 ] && [ $i = 2 ] ; then
-#       if [ $numberLabel = 78 ]; then
-#        echo "Don't add 78.asc to seeds list" 
-#       else
-#        echo $case >> seeds${overlapName}.txt
-#       fi  
-#    fi
-#  done  
-#done
 for i in `seq 1 2`
 do
-  echo $i
-  for file in ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/*.asc; do 
-    export numberFileLabel=`basename $file`
-    export numberLabel=${numberFileLabel%.*}
-    echo $numberLabel
-    if [ $(($numberLabel % 2)) -eq 0 ] && [ $i -eq 1 ]; then
-      echo $file >> seeds${overlapName}.txt
-    elif [ $(($numberLabel % 2)) -ne 0 ] && [ $i -eq 2 ]; then
-      echo $file >> seeds${overlapName}.txt
+  for j in `seq 1 90`; do
+    export fileLabel=${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${j}.asc
+    echo ${fileLabel}
+    if [ $(($j % 2)) -eq 0 ] && [ $i -eq 2 ] && [ $j -ne 78 ] && [ -e ${fileLabel} ]; then
+      echo ${fileLabel} >> seeds${overlapName}.txt
+    elif [ $(($j % 2)) -ne 0 ] && [ $i -eq 1 ] && [ -e ${fileLabel} ]; then
+      echo ${fileLabel} >> seeds${overlapName}.txt
     fi
   done
 done
@@ -108,7 +77,7 @@ echo $matrix
 if [ -e $matrix ]; then
   echo "probtrackx already proceed"
 else
-  ${toolDIR}/DoTractography.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapName} ${loopcheckFlag} ${network_DIR}
+  ${toolDIR}/DoTractography.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapName} ${loopcheckFlag} ${network_DIR} ${toolDIR}
 fi
 
 echo "Normalize and plot connectivity matrix..."
@@ -118,5 +87,6 @@ rm ${network_DIR}/Matrix_normalized_by_sum_row_Visualization.pdf
 cd ${toolDIR}
 matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
 echo "End, matrix save."
+
 
 
