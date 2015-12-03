@@ -82,9 +82,13 @@ fi
 
 echo "Normalize and plot connectivity matrix..."
 #erase old matrix saved
-rm ${network_DIR}/Matrix_normalized_by_sum_row.txt
-rm ${network_DIR}/Matrix_normalized_by_sum_row_Visualization.pdf
+rm ${network_DIR}/matrix_normalized.txt
+rm ${network_DIR}/matrix_normalized.pdf
 cd ${toolDIR}
+#run prog c++ normalize
+#
+#python plotMatrix.py ${SUBJECT} ${network_DIR} ${overlapName} ${loopcheck}
+
 matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
 echo "End, matrix save."
 
