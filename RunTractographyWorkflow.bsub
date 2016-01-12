@@ -1,0 +1,8 @@
+####   run_TractographyWorkflow    ####
+#BSUB -q week
+#BSUB -n 1
+#BSUB -R "span[hosts=1]"
+#BSUB -M 6
+#BSUB -o logFileOutput_neo
+./TractographyWorkflow.sh neo
+##### end of run_TractographyWorkflow ####
