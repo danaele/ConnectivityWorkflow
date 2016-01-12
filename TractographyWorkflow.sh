@@ -86,10 +86,13 @@ rm ${network_DIR}/matrix_normalized.txt
 rm ${network_DIR}/matrix_normalized.pdf
 cd ${toolDIR}
 #run prog c++ normalize
-#
-#python plotMatrix.py ${SUBJECT} ${network_DIR} ${overlapName} ${loopcheck}
+#${toolDIR}/matrixProcessing -m ${network_DIR}/fdt_network_matrix --average --useMatrixNormalized --outputTriangularMatrixFilename TriangularNetworkMatrix_${SUBJECT}.txt
+#--min --max
 
-matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
+export matrix="Average_Normalized_triangularNetworkMatrix_${SUBJECT}.txt"
+#python plotMatrix.py ${SUBJECT} ${matrix} ${overlapName} ${loopcheck}
+
+#matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
 echo "End, matrix save."
 
 

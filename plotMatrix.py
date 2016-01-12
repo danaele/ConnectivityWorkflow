@@ -6,15 +6,15 @@ from sys import argv
 #args : ${SUBJECT} ${network_DIR} ${overlapName} ${loopcheck}
 
 subject = argv[1] 
-network_dir = argv[2] 
+matrix = argv[2] 
 overlapName = argv[3] 
 loopcheck = argv[4] 
 
-filename = network_dir +'/matrix_normalized.txt' 
-filenameEx = 'mat.txt'
+
+
 print len(overlapName)
 print len(loopcheck)
-fin = open(filenameEx,'r')
+fin = open(matrix,'r')
 a=[]
 for line in fin.readlines():
     a.append( [ float (x) for x in line.split(' ') ] )   
@@ -44,4 +44,4 @@ ax = fig.add_subplot(1,1,1)
 cax = ax.imshow(a, interpolation='nearest', vmin=0.0, vmax=0.99)
 fig.colorbar(cax)
 #pl.show()
-fig.savefig('matrix_normalized.pdf', format='pdf')
+fig.savefig(matrix + '.pdf', format='pdf')
