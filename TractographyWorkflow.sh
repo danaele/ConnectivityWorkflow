@@ -43,7 +43,7 @@ export SURF_DIR=$PWD/labelSurfaces
 
 echo ${toolDIR}
 #Create label surfaces
-#${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
+${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
 
 cd ${SUBJECT_DIR}
  
@@ -86,11 +86,11 @@ rm ${network_DIR}/matrix_normalized.txt
 rm ${network_DIR}/matrix_normalized.pdf
 cd ${toolDIR}
 #run prog c++ normalize
-#${toolDIR}/matrixProcessing -m ${network_DIR}/fdt_network_matrix --average --useMatrixNormalized --outputTriangularMatrixFilename TriangularNetworkMatrix_${SUBJECT}.txt
+${toolDIR}/matrixProcessing -m ${network_DIR}/fdt_network_matrix --average --useMatrixNormalized --outputTriangularMatrixFilename TriangularNetworkMatrix_${SUBJECT}.txt
 #--min --max
 
 export matrix="Average_Normalized_triangularNetworkMatrix_${SUBJECT}.txt"
-#python plotMatrix.py ${SUBJECT} ${matrix} ${overlapName} ${loopcheck}
+python plotMatrix.py ${SUBJECT} ${matrix} ${overlapName} ${loopcheck}
 
 #matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
 echo "End, matrix save."
