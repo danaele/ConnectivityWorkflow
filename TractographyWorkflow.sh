@@ -49,17 +49,12 @@ cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-for i in `seq 1 2`
-do
-  for j in `seq 1 90`; do
+for j in `seq 1 90`; do
     export fileLabel=${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${j}.asc
     echo ${fileLabel}
-    if [ $(($j % 2)) -eq 0 ] && [ $i -eq 2 ] && [ $j -ne 78 ] && [ -e ${fileLabel} ]; then
-      echo ${fileLabel} >> seeds${overlapName}.txt
-    elif [ $(($j % 2)) -ne 0 ] && [ $i -eq 1 ] && [ -e ${fileLabel} ]; then
+    if [ -e ${fileLabel} ]; then
       echo ${fileLabel} >> seeds${overlapName}.txt
     fi
-  done
 done
 
 if [ "${loopcheck}" = "true" ]; then 
