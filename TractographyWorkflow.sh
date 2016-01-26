@@ -44,11 +44,18 @@ export SURF_DIR=$PWD/labelSurfaces
 echo ${toolDIR}
 #Create label surfaces
 if [-e ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces]; then
+<<<<<<< Updated upstream
        echo "Label already created"
 else
        ${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
 fi
 
+=======
+	echo "Label already created"
+else
+	${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
+fi
+>>>>>>> Stashed changes
 cd ${SUBJECT_DIR}
  
 #Create seeds list 
