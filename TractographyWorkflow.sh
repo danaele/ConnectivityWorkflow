@@ -2,14 +2,16 @@
 
 #TractographyWorkflow : for neonate dataset to the connectivity matrix 
 
-#Variables
+#Variables to set
 export SUBJECT=$1
 export SUBJECT_DIR=/netscr/danaele/neonate_1year/${SUBJECT}
 #export SUBJECT_DIR=/work/danaele/data/${SUBJECT}
 export DTI_DIR=${SUBJECT_DIR}/DTI
 OverLap="true"
 loopcheck="true"
+number_ROIS = 150
 export toolDIR=$PWD
+export JSONFile_DIR=/netscr/danaele/neonate_1year/
 
 
 #Create Diffusion data for bedpostx 

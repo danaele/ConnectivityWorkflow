@@ -3,6 +3,8 @@ import json
 import numpy as np
 from pprint import pprint
 
+#args : SUBJECT_DIR, SUBJECT, JSONTABLE filename, ${overlapFlag} (seedlist), number_ROIS
+
 DIR_Surfaces = "/Human2/Neonate-1-2yr/PROCEED/neo-0029-3-1year/OutputSurfaces_overlapping/labelSurfaces/"
 
 #Open Json file and parse 
