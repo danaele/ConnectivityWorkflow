@@ -46,29 +46,23 @@ export SURF_DIR=$PWD/labelSurfaces
 echo ${toolDIR}
 #Create label surfaces
 if [-e ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces]; then
-<<<<<<< Updated upstream
-       echo "Label already created"
-else
-       ${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
-fi
-
-=======
 	echo "Label already created"
 else
 	${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
 fi
->>>>>>> Stashed changes
+
 cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-for j in `seq 1 90`; do
-    export fileLabel=${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${j}.asc
-    echo ${fileLabel}
-    if [ -e ${fileLabel} ]; then
-      echo ${fileLabel} >> seeds${overlapName}.txt
-    fi
-done
+python writeSeedList.py  ${SUBJECT} ${SUBJECT_DIR} ${overlapName} ${JSONFile_DIR} ${number_ROIS}
+#for j in `seq 1 90`; do
+#    export fileLabel=${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${j}.asc
+#    echo ${fileLabel}
+#    if [ -e ${fileLabel} ]; then
+#      echo ${fileLabel} >> seeds${overlapName}.txt
+#    fi
+#done
 
 if [ "${loopcheck}" = "true" ]; then 
   export loopcheckFlag="--loopcheck"
