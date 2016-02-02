@@ -10,16 +10,36 @@ matrix = argv[2]
 overlapName = argv[3] 
 loopcheck = argv[4] 
 
-
-
-print len(overlapName)
-print len(loopcheck)
+#print len(overlapName)
+#print len(loopcheck)
 fin = open(matrix,'r')
 a=[]
 for line in fin.readlines():
-    a.append( [ float (x) for x in line.split(' ') ] )   
+  print line.split('  ')
+  a.append( [ float(x) for x in line.split('  ') if x != "\n" ] )   
 #print N.shape(a)
 #print a 
+
+#Normalize NOW
+waytotal = []
+sumLine = 0
+j=0
+for line in a:
+  for val in line:
+    sumLine = sumLine + float(val)
+    j=j+1
+  waytotal.append(sumLine)
+  print j
+print len(waytotal)
+print waytotal[0]
+i=0
+for line in a:
+  for val in line:
+    print i
+    val = val / waytotal[i]
+  i=i+1  
+    
+print a 
 
 # plotting the correlation matrix
 fig = pl.figure(num=None, figsize=(15, 15))
