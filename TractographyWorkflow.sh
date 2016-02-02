@@ -47,17 +47,10 @@ export SURF_DIR=$PWD/labelSurfaces
 
 echo ${toolDIR}
 #Create label surfaces
-<<<<<<< HEAD
 if [ -d ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces ]; then
        echo "Label already created"
 else
        ${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
-=======
-if [-e ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces]; then
-	echo "Label already created"
-else
-	${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
->>>>>>> 653dfca4caa89da72ea503de66ca7eff839adf52
 fi
 
 cd ${SUBJECT_DIR}
