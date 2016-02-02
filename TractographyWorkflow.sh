@@ -10,11 +10,15 @@ export SUBJECT_DIR=/netscr/danaele/neonate_1year/${SUBJECT}
 export DTI_DIR=${SUBJECT_DIR}/DTI
 OverLap="true"
 loopcheck="true"
-number_ROIS = 150
-export matrix = fdt_network_matrix
+number_ROIS=150
+matrix=fdt_network_matrix
 export toolDIR=$PWD
-export JSONFile_DIR=/netscr/danaele/neonate_1year/JSON_
+export JSONFile_PATH=$toolDIR/JSON_TABLE_AAL.json
 ########################################################################
+
+cp ${JSONFile_PATH} ${SUBJECT_DIR}
+jsonfilename=basename ${JSONFile_PATH} 
+export NewJSONFILE_PATH=${SUBJECT_DIR}/$jsonfilename
 
 #Create Diffusion data for bedpostx 
 echo "Create Diffusion data ..."
@@ -57,7 +61,7 @@ cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-python writeSeedList.py  ${SUBJECT} ${SUBJECT_DIR} ${overlapName} ${JSONFile_DIR} ${number_ROIS}
+python writeSeedList.py  ${SUBJECT} ${SUBJECT_DIR} ${overlapName} ${NewJSONFILE_PATH} ${number_ROIS}
 
 if [ "${loopcheck}" = "true" ]; then 
   export loopcheckFlag="--loopcheck"
