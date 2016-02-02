@@ -3,16 +3,18 @@
 #TractographyWorkflow : for neonate dataset to the connectivity matrix 
 
 #Variables to set
-export SUBJECT=$1
+########################################################################
+export SUBJECT=$1  #ex : neo-0029-1-1year
 export SUBJECT_DIR=/netscr/danaele/neonate_1year/${SUBJECT}
 #export SUBJECT_DIR=/work/danaele/data/${SUBJECT}
 export DTI_DIR=${SUBJECT_DIR}/DTI
 OverLap="true"
 loopcheck="true"
 number_ROIS = 150
+export matrix = fdt_network_matrix
 export toolDIR=$PWD
-export JSONFile_DIR=/netscr/danaele/neonate_1year/
-
+export JSONFile_DIR=/netscr/danaele/neonate_1year/JSON_
+########################################################################
 
 #Create Diffusion data for bedpostx 
 echo "Create Diffusion data ..."
@@ -56,13 +58,6 @@ cd ${SUBJECT_DIR}
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
 python writeSeedList.py  ${SUBJECT} ${SUBJECT_DIR} ${overlapName} ${JSONFile_DIR} ${number_ROIS}
-#for j in `seq 1 90`; do
-#    export fileLabel=${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces/${j}.asc
-#    echo ${fileLabel}
-#    if [ -e ${fileLabel} ]; then
-#      echo ${fileLabel} >> seeds${overlapName}.txt
-#    fi
-#done
 
 if [ "${loopcheck}" = "true" ]; then 
   export loopcheckFlag="--loopcheck"
@@ -73,10 +68,10 @@ else
 fi
 
 export network_DIR=${SUBJECT_DIR}/Network_${SUBJECT}${overlapName}${loopcheckName} 
-export matrix=$network_DIR/fdt_network_matrix 
-echo $matrix
+export matrixDIR=$network_DIR/${matrix} 
+echo $matrixDIR
 #Do tractography with probtrackx2
-if [ -e $matrix ]; then
+if [ -e $matrixDIR ]; then
   echo "probtrackx already proceed"
 else
   ${toolDIR}/DoTractography.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapName} ${loopcheckFlag} ${network_DIR} ${toolDIR}
@@ -84,17 +79,11 @@ fi
 
 echo "Normalize and plot connectivity matrix..."
 #erase old matrix saved
-rm ${network_DIR}/matrix_normalized.txt
-rm ${network_DIR}/matrix_normalized.pdf
+rm ${matrixDIR}_normalized.pdf
 cd ${toolDIR}
-#run prog c++ normalize
-${toolDIR}/matrixProcessing -m ${network_DIR}/fdt_network_matrix --average --useMatrixNormalized --outputTriangularMatrixFilename TriangularNetworkMatrix_${SUBJECT}.txt
-#--min --max
 
-export matrix="Average_Normalized_triangularNetworkMatrix_${SUBJECT}.txt"
-python plotMatrix.py ${SUBJECT} ${matrix} ${overlapName} ${loopcheck}
+python plotMatrix.py ${SUBJECT} ${SUBJECT_DIR} ${matrixDIR} ${overlapName} ${loopcheck}
 
-#matlab -nodesktop -r "connectivity_matrix_normalized('${SUBJECT}','${network_DIR}','${overlapName}','${loopcheck}'); exit; "
 echo "End, matrix save."
 
 

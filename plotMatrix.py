@@ -3,15 +3,15 @@ import matplotlib.pyplot as plt
 from matplotlib import pylab as pl
 from sys import argv
 
-#args : ${SUBJECT} ${network_DIR} ${overlapName} ${loopcheck}
+#args : ${SUBJECT} ${SUBJECT_DIR} ${network_DIR} ${overlapName} ${loopcheck}
 
 subject = argv[1]
 subject_dir = argv[2] 
-matrix = argv[3] 
+fileMatrix = argv[3] 
 overlapName = argv[4] 
 loopcheck = argv[5] 
 
-fileMatrix = subject_dir + subject + '/Network_' + subject + overlapName + loopcheck + '/' + matrix
+#fileMatrix = subject_dir + subject + '/Network_' + subject + overlapName + loopcheck + '/' + matrix
 fin = open(fileMatrix,'r')
 a=[]
 for line in fin.readlines():
