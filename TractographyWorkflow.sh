@@ -14,7 +14,7 @@ number_ROIS=150
 matrix=fdt_network_matrix
 export toolDIR=$PWD
 export JSONFile_PATH=$toolDIR/
-export JSONfilename=JSON_TABLE_AAL.json
+export JSONfilename=TABLE_AAL.json
 ########################################################################
 
 export NewJSONFILE_PATH=${SUBJECT_DIR}/${JSONfilename}
