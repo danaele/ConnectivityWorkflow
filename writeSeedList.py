@@ -10,7 +10,6 @@ overlapName = argv[2]
 jsonFile = argv[3] 
 nb_ROIS = argv[4]
 
-
 DIR_Surfaces = subject_dir + '/OutputSurfaces' + overlapName + '/labelSurfaces/'
 
 #Open Json file and parse 
@@ -19,8 +18,6 @@ with open(jsonFile) as data_file:
 
 #Create file for seedList
 seedPath = subject_dir + '/seeds' + overlapName + '.txt'
-print "SEED PATHHHH"
-print seedPath
 seedList = open(seedPath, 'w')
 
 #Put all MatrixRow to -1 
@@ -47,4 +44,3 @@ seedList.close()
 #Update JSON file 
 with open(jsonFile, 'w') as txtfile:
     json.dump(data, txtfile, indent = 2)
-

@@ -4,7 +4,6 @@ from matplotlib import pylab as pl
 from sys import argv
 
 #args : ${SUBJECT} ${network_DIR} ${overlapName} ${loopcheck}
-
 subject = argv[1]
 fileMatrix = argv[2] 
 overlapName = argv[3] 

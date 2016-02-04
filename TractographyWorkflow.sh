@@ -88,6 +88,3 @@ cd ${toolDIR}
 python ${toolDIR}/plotMatrix.py ${SUBJECT} ${matrixDIR} ${overlapName} ${loopcheck}
 
 echo "End, matrix save."
-
-
-
