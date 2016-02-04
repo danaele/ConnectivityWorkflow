@@ -13,18 +13,18 @@ loopcheck="true"
 number_ROIS=150
 matrix=fdt_network_matrix
 export toolDIR=$PWD
-export JSONFile_PATH=$toolDIR/JSON_TABLE_AAL.json
+export JSONFile_PATH=$toolDIR/
+export JSONfilename=JSON_TABLE_AAL.json
 ########################################################################
 
-cp ${JSONFile_PATH} ${SUBJECT_DIR}
-jsonfilename=basename ${JSONFile_PATH} 
-export NewJSONFILE_PATH=${SUBJECT_DIR}/$jsonfilename
+export NewJSONFILE_PATH=${SUBJECT_DIR}/${JSONfilename}
+cp ${JSONFile_PATH}/${JSONfilename} ${NewJSONFILE_PATH}
 
 #Create Diffusion data for bedpostx 
 echo "Create Diffusion data ..."
 export DiffusionData=${SUBJECT_DIR}/Diffusion/data.nii.gz
-export DiffusiobNodif_Brain=${SUBJECT_DIR}/Diffusion/nodif_brain_mask.nii.gz
-if [ -e $DiffusionData ] && [ -e $DiffusiobNodif_Brain ]; then 
+export DiffusionNodif_Brain=${SUBJECT_DIR}/Diffusion/nodif_brain_mask.nii.gz
+if [ -e $DiffusionData ] && [ -e $DiffusionNodif_Brain ]; then 
   echo "Diffusion Data already created "
 else
   ${toolDIR}/createDiffusionData.sh ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR}
@@ -49,19 +49,18 @@ mkdir ${SUBJECT_DIR}/OutputSurfaces${overlapName}
 cd ${SUBJECT_DIR}/OutputSurfaces${overlapName}
 export SURF_DIR=$PWD/labelSurfaces
 
-echo ${toolDIR}
 #Create label surfaces
-if [ -d ${SUBJECT_DIR}/OutputSurfaces${overlapName}/labelSurfaces ]; then
+if [ -d ${SURF_DIR} ]; then
        echo "Label already created"
 else
-       ${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${SUBJECT_DIR} ${DTI_DIR} ${overlapFlag}
+	${toolDIR}/ExtractLabels.sh ${toolDIR} ${SUBJECT} ${NewJSONFILE_PATH} ${DTI_DIR} ${overlapFlag}
 fi
 
 cd ${SUBJECT_DIR}
  
 #Create seeds list 
 rm ${SUBJECT_DIR}/seeds${overlapName}.txt
-python writeSeedList.py  ${SUBJECT} ${SUBJECT_DIR} ${overlapName} ${NewJSONFILE_PATH} ${number_ROIS}
+python ${toolDIR}/writeSeedList.py ${SUBJECT_DIR} ${overlapName} ${NewJSONFILE_PATH} ${number_ROIS}
 
 if [ "${loopcheck}" = "true" ]; then 
   export loopcheckFlag="--loopcheck"
@@ -86,7 +85,7 @@ echo "Normalize and plot connectivity matrix..."
 rm ${matrixDIR}_normalized.pdf
 cd ${toolDIR}
 
-python plotMatrix.py ${SUBJECT} ${SUBJECT_DIR} ${matrixDIR} ${overlapName} ${loopcheck}
+python ${toolDIR}/plotMatrix.py ${SUBJECT} ${matrixDIR} ${overlapName} ${loopcheck}
 
 echo "End, matrix save."
 

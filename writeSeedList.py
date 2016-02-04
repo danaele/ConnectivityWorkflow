@@ -4,22 +4,23 @@ import numpy as np
 from pprint import pprint
 from sys import argv
 
-#args : SUBJECT, SUBJECT_DIR, ${overlapFlag}, JSONTABLE filename, number_ROIS
-subject = argv[1]
-subject_dir = argv[2] 
-overlapName = argv[3] 
-jsonFile = argv[4] 
-nb_ROIS = argv[5]
+#args : SUBJECT_DIR, ${overlapFlag}, JSONTABLE filename, number_ROIS
+subject_dir = argv[1] 
+overlapName = argv[2] 
+jsonFile = argv[3] 
+nb_ROIS = argv[4]
 
 
-DIR_Surfaces = subject_dir + subject + 'OutputSurfaces' + overlapName + '/labelSurfaces/'
+DIR_Surfaces = subject_dir + '/OutputSurfaces' + overlapName + '/labelSurfaces/'
 
 #Open Json file and parse 
 with open(jsonFile) as data_file:    
     data = json.load(data_file)
 
 #Create file for seedList
-seedPath = subject_dir + subject + '/seeds' + overlapName + '.txt'
+seedPath = subject_dir + '/seeds' + overlapName + '.txt'
+print "SEED PATHHHH"
+print seedPath
 seedList = open(seedPath, 'w')
 
 #Put all MatrixRow to -1 
