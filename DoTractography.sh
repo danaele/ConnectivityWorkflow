@@ -13,9 +13,9 @@ $toolDir/DWIConvert --inputVolume $DTI_DIR/${SUBJECT}_T1_regDTI.nrrd --conversio
 echo "Conversion done"
 
 echo "Start probtrackx " 
-echo "probtrackx2 --samples=${SUBJECT_DIR}/Diffusion.bedpostX/merged --mask=${SUBJECT_DIR}/Diffusion.bedpostX/nodif_brain_mask --seed=${SUBJECT_DIR}/seeds${OverLap}.txt --seedref=${DTI_DIR}/${SUBJECT}_T1_regDTI.nii.gz --forcedir --network --omatrix1 -P 1000  -V 1 --dir=${network_dir} --stop=${SUBJECT_DIR}/seeds${OverLap}.txt ${loopcheckFlag} "
+echo "probtrackx2 --samples=${SUBJECT_DIR}/Diffusion.bedpostX/merged --mask=${SUBJECT_DIR}/Diffusion.bedpostX/nodif_brain_mask --seed=${SUBJECT_DIR}/seeds${OverLap}.txt --seedref=${DTI_DIR}/${SUBJECT}_T1_regDTI.nii.gz --forcedir --network --omatrix1 -P 3000 --steplength=0.75 --sampvox=0.5  -V 1 --dir=${network_dir} --stop=${SUBJECT_DIR}/seeds${OverLap}.txt ${loopcheckFlag} "
 
-probtrackx2 --samples=${SUBJECT_DIR}/Diffusion.bedpostX/merged --mask=${SUBJECT_DIR}/Diffusion.bedpostX/nodif_brain_mask --seed=${SUBJECT_DIR}/seeds${overlapName}.txt --seedref=${DTI_DIR}/${SUBJECT}_T1_regDTI.nii.gz --forcedir --network --omatrix1 -P 1000  -V 1 --dir=${network_dir} --stop=${SUBJECT_DIR}/seeds${overlapName}.txt ${loopcheckFlag}
+probtrackx2 --samples=${SUBJECT_DIR}/Diffusion.bedpostX/merged --mask=${SUBJECT_DIR}/Diffusion.bedpostX/nodif_brain_mask --seed=${SUBJECT_DIR}/seeds${overlapName}.txt --seedref=${DTI_DIR}/${SUBJECT}_T1_regDTI.nii.gz --forcedir --network --omatrix1 -P 3000 --steplength=0.75 --sampvox=0.5 -V 1 --dir=${network_dir} --stop=${SUBJECT_DIR}/seeds${overlapName}.txt ${loopcheckFlag}
 echo "done "
 
 
